@@ -1,0 +1,81 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #050816;
+  color: #e5e7eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #111827;
+  background: rgba(3, 7, 18, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.logo {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  font-size: 0.95rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tab {
+  border: 1px solid #1f2933;
+  background: #020617;
+  color: #e5e7eb;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.tab:hover {
+  transform: translateY(-1px);
+  border-color: #4b5563;
+}
+
+.tab.active {
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: white;
+  border-color: transparent;
+}
+
+.content {
+  flex: 1;
+  position: relative;
+}
+
+/* El canvas ocupa todo */
+.canvas-full {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
