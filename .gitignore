@@ -1,0 +1,59 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+
+# Vite
+dist/
+dist-ssr/
+*.local
+
+# Logs
+logs
+*.log
+pnpm-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
+*.tsbuildinfo
+
+# Build output
+build/
+out/
+
+# Coverage
+coverage/
+
+# Temp files
+*.tmp
+*.temp
+
+# Optional: if using Babel
+.babelrc
+.babelrc.js
+.babelrc.json
+babel.config.js
+
+# Optional: if using ESLint/Prettier caches
+.eslintcache
+.prettier.cache
