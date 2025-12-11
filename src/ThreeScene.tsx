@@ -1,24 +1,22 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { useMemo, useRef } from "react";
+import { useRef, useMemo } from "react";
 import * as THREE from "three";
 
-// Mapa de alturas de ejemplo (luego puedes cambiarlo / hacerlo más grande)
-const HEIGHT_MAP: number[][] = [
-  [0, 1, 2, 1, 0],
-  [1, 2, 3, 2, 1],
-  [0, 1, 4, 1, 0],
-  [1, 2, 3, 2, 1],
-  [0, 1, 2, 1, 0],
-];
+const SPACING = 0.7;
+const HEIGHT_SCALE = 0.4;
 
-const SPACING = 0.7; // distancia entre puntos en X y Z
-const HEIGHT_SCALE = 0.4; // escala de la altura (Y)
+type ThreeSceneProps = {
+  heightMap: number[][];
+};
 
-// Construye una geometría de lineSegments a partir del mapa (como FDF)
-function buildWireGeometry() {
-  const rows = HEIGHT_MAP.length;
-  const cols = HEIGHT_MAP[0].length;
+type WireTerrainProps = {
+  heightMap: number[][];
+};
+
+function buildWireGeometry(heightMap: number[][]) {
+  const rows = heightMap.length;
+  const cols = heightMap[0]?.length ?? 0;
 
   const positions: number[] = [];
 
@@ -26,24 +24,20 @@ function buildWireGeometry() {
     for (let j = 0; j < cols; j++) {
       const x = (j - cols / 2) * SPACING;
       const z = (i - rows / 2) * SPACING;
-      const y = HEIGHT_MAP[i][j] * HEIGHT_SCALE;
+      const y = heightMap[i][j] * HEIGHT_SCALE;
 
-      // Segmento horizontal (→) hacia j+1
+      // Horizontal →
       if (j < cols - 1) {
         const x2 = (j + 1 - cols / 2) * SPACING;
-        const z2 = z;
-        const y2 = HEIGHT_MAP[i][j + 1] * HEIGHT_SCALE;
-
-        positions.push(x, y, z, x2, y2, z2);
+        const y2 = heightMap[i][j + 1] * HEIGHT_SCALE;
+        positions.push(x, y, z, x2, y2, z);
       }
 
-      // Segmento vertical (↓) hacia i+1
+      // Vertical ↓
       if (i < rows - 1) {
-        const x2 = x;
         const z2 = (i + 1 - rows / 2) * SPACING;
-        const y2 = HEIGHT_MAP[i + 1][j] * HEIGHT_SCALE;
-
-        positions.push(x, y, z, x2, y2, z2);
+        const y2 = heightMap[i + 1][j] * HEIGHT_SCALE;
+        positions.push(x, y, z, x, y2, z2);
       }
     }
   }
@@ -53,34 +47,37 @@ function buildWireGeometry() {
     "position",
     new THREE.Float32BufferAttribute(positions, 3)
   );
-
   return geometry;
 }
 
-const WireTerrain: React.FC = () => {
-  const geometry = useMemo(() => buildWireGeometry(), []);
+// 🔹 ESTE componente vive *dentro* del <Canvas> y aquí sí usamos useFrame
+const WireTerrain: React.FC<WireTerrainProps> = ({ heightMap }) => {
+  const geom = useMemo(() => buildWireGeometry(heightMap), [heightMap]);
   const lineRef = useRef<THREE.LineSegments | null>(null);
 
-  // Pequeña rotación suave (solo para que se vea vivo)
+  // Rotación suave
   useFrame(() => {
     if (!lineRef.current) return;
-    lineRef.current.rotation.y += 0.002;
+    lineRef.current.rotation.y += 0.0025;
   });
 
   return (
-    <lineSegments ref={lineRef} geometry={geometry}>
-      <lineBasicMaterial color="#0ea5e9" linewidth={1} />
+    <lineSegments ref={lineRef} geometry={geom}>
+      <lineBasicMaterial color="#0ea5e9" />
     </lineSegments>
   );
 };
 
-const ThreeScene: React.FC = () => {
+// 🔹 Este componente solo crea el Canvas y mete WireTerrain dentro
+const ThreeScene: React.FC<ThreeSceneProps> = ({ heightMap }) => {
   return (
-    <Canvas className="canvas-full" camera={{ position: [4, 4, 6], fov: 50 }}>
+    <Canvas className="canvas-full" camera={{ position: [4, 4, 7], fov: 45 }}>
       <color attach="background" args={["#020617"]} />
       <ambientLight intensity={0.4} />
       <directionalLight position={[4, 8, 6]} intensity={1.2} />
-      <WireTerrain />
+
+      <WireTerrain heightMap={heightMap} />
+
       <OrbitControls enableDamping />
     </Canvas>
   );
