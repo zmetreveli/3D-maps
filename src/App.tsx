@@ -38,7 +38,7 @@ const App: React.FC = () => {
   return (
     <div className="app-root">
       <header className="top-bar">
-        <div className="logo">3D FDF Playground</div>
+        <div className="logo">3D</div>
         <div className="tabs">
           <button
             className={engine === "three" ? "tab active" : "tab"}
