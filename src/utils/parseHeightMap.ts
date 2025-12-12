@@ -1,11 +1,3 @@
-// Lee mapas tipo FDF:
-//  0 1 2 3
-//  1 2 3 4
-//  0 -1 -2 -3
-//  1,0xFF0000 2,0x00FF00 ...
-//
-// De momento ignoramos el color y nos quedamos solo con la altura.
-
 export function parseHeightMap(text: string): number[][] {
   // Dividimos en líneas, quitamos espacios y líneas vacías
   const lines = text

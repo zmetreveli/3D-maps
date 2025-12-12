@@ -15,7 +15,7 @@ const HEIGHT_MAP: number[][] = [
 ];
 
 const SPACING = 0.7; // distancia entre puntos en X y Z
-const HEIGHT_SCALE = 0.114; // escala de la altura (Y)
+const HEIGHT_SCALE = 0.24; // escala de la altura (Y)
 
 // Construye una geometría de lineSegments a partir del mapa (como FDF)
 function buildWireGeometry() {
