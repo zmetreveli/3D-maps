@@ -1,3 +1,5 @@
+import { Value } from "three/examples/jsm/inspector/ui/Values.js";
+
 export function parseHeightMap(text: string): number[][] {
   // Dividimos en líneas, quitamos espacios y líneas vacías
   const lines = text
@@ -40,7 +42,6 @@ export function parseHeightMap(text: string): number[][] {
   if (map.length === 0) {
     throw new Error("No valid rows in height map");
   }
-
   // Normalizar a rectángulo si alguna fila viene más corta/larga
   const maxWidth = Math.max(...map.map((row) => row.length));
 
@@ -52,6 +53,6 @@ export function parseHeightMap(text: string): number[][] {
     }
     return padded;
   });
-
+  console.log("Parsed height map:", Value);
   return normalized;
 }
